@@ -1,3 +1,35 @@
 ## QUANT EDGE
 
-### JavaScript test
+### JavaScript, Framwoork test
+
+To run this app, first clone it:
+
+```
+git clone https://github.com/DinhThienPhuc/quant-edge-test.git
+```
+
+Move to quant-edge-test folder:
+
+```
+cd quant-edge-test
+```
+
+Install dependencies:
+
+```
+npm install
+```
+
+Open webserver:
+
+```
+node server.js
+```
+
+Open another terminal tab, open React client:
+
+```
+npm start
+```
+
+Browser will automatically open app in [http://localhost:3000/](http://localhost:3000/)

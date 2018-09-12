@@ -64,8 +64,8 @@ class App extends Component {
             <Tab label="top losers" className={classes.tabLabelItem} />
           </Tabs>
         </AppBar>
-        {value === 0 && <TabContainer data={data} />}
-        {value === 1 && <TabContainer data={data} />}
+        {value === 0 && <TabContainer data={data} order="desc" />}
+        {value === 1 && <TabContainer data={data} order="asc" />}
       </div>
     );
   }

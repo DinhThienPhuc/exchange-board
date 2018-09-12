@@ -7,26 +7,27 @@ const port = process.env.PORT || 4869;
 const server = http.createServer(app);
 const io = socketIO(server);
 
-const originalData = require("./helpers/originalData");
+const originalData = require("./originalData");
 const {
   modifyPriceAndVolume,
+  modifyValue,
   modifyChange,
   modifyChangePercent,
   modifyStatus
-} = require("./helpers/functions");
+} = require("./src/helpers/functions");
 
 var previousData = [];
 app.use(express.static("build"));
 
 io.on("connection", socket => {
   console.log("User connected");
-  // The first time server is on
   if (!previousData.length) {
     const newData = originalData.map(row => {
       return {
         ...row,
         lastestPrice: row.originalPrice,
-        lastestVolume: row.originalVolume
+        lastestVolume: row.originalVolume,
+        value: parseInt(row.originalPrice * row.originalVolume)
       };
     });
     previousData = [...newData];
@@ -35,11 +36,11 @@ io.on("connection", socket => {
     io.sockets.emit("change data", previousData);
   }
 
-  // Server emits data every 5 seconds
   const refreshIntervalId = setInterval(() => {
     const newData = previousData.map(row => {
       const modifiedPriceAndVolume = modifyPriceAndVolume(row);
-      const modifiedChange = modifyChange(modifiedPriceAndVolume);
+      const modifiedValue = modifyValue(modifiedPriceAndVolume);
+      const modifiedChange = modifyChange(modifiedValue);
       const modifiedChangePercent = modifyChangePercent(modifiedChange);
       const modifiedStatus = modifyStatus(modifiedChangePercent);
       return modifiedStatus;

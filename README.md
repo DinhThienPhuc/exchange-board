@@ -1,6 +1,4 @@
-## QUANT EDGE
-
-### JavaScript, Framwoork test
+## JavaScript, Framework test
 
 To run this app, first clone it:
 

@@ -26,7 +26,7 @@ Open webserver:
 node server.js
 ```
 
-Open another terminal tab, open React client:
+Switch to another terminal tab, open React client:
 
 ```
 npm start

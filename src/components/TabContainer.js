@@ -98,7 +98,7 @@ const TabContainer = props => {
                 <TableCell numeric className={classes.price}>
                   {row.lastestPrice}
                 </TableCell>
-                <TableCell numeric classname={classes.value}>
+                <TableCell numeric className={classes.value}>
                   {row.value}
                 </TableCell>
                 <TableCell

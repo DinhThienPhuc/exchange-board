@@ -3,13 +3,13 @@
 To run this app, first clone it:
 
 ```
-git clone https://github.com/DinhThienPhuc/quant-edge-test.git
+git clone https://github.com/DinhThienPhuc/exchange-board.git
 ```
 
-Move to quant-edge-test folder:
+Move to exchange-board folder:
 
 ```
-cd quant-edge-test
+cd exchange-board
 ```
 
 Install dependencies:

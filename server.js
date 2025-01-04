@@ -1,33 +1,45 @@
-const express = require("express");
-const http = require("http");
-const app = express();
-const socketIO = require("socket.io");
-const port = process.env.PORT || 4869;
+import cors from "cors";
+import express, { static as expressStatic } from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
-const server = http.createServer(app);
-const io = socketIO(server);
-
-const originalData = require("./originalData");
-const {
-  modifyPriceAndVolume,
-  modifyValue,
+import {
   modifyChange,
   modifyChangePercent,
-  modifyStatus
-} = require("./src/helpers/functions");
+  modifyPriceAndVolume,
+  modifyStatus,
+  modifyValue,
+} from "./src/helpers/functions.js";
+import { originalData } from "./src/helpers/originalData.js";
+
+const app = express();
+
+const port = process.env.PORT || 4869;
+
+app.use(cors());
+app.use(expressStatic("build"));
+
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
+});
 
 var previousData = [];
-app.use(express.static("build"));
 
-io.on("connection", socket => {
+io.on("connection", (socket) => {
   console.log("User connected");
   if (!previousData.length) {
-    const newData = originalData.map(row => {
+    const newData = originalData.map((row) => {
       return {
         ...row,
-        lastestPrice: row.originalPrice,
-        lastestVolume: row.originalVolume,
-        value: parseInt(row.originalPrice * row.originalVolume)
+        latestPrice: row.originalPrice,
+        latestVolume: row.originalVolume,
+        value: parseInt(row.originalPrice * row.originalVolume),
       };
     });
     previousData = [...newData];
@@ -37,7 +49,7 @@ io.on("connection", socket => {
   }
 
   const refreshIntervalId = setInterval(() => {
-    const newData = previousData.map(row => {
+    const newData = previousData.map((row) => {
       const modifiedPriceAndVolume = modifyPriceAndVolume(row);
       const modifiedValue = modifyValue(modifiedPriceAndVolume);
       const modifiedChange = modifyChange(modifiedValue);
